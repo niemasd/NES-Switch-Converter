@@ -14,6 +14,7 @@ from unidecode import unidecode
 from xml.etree.ElementTree import parse
 from zlib import compress
 import argparse
+MAXTITLE=60
 
 def convert_date(old):
     return '%s-%s-%s' % (old[:4], old[4:6], old[6:8])
@@ -39,7 +40,7 @@ db = open('%s/lclassics.titlesdb' % OUTDIR, 'w')
 db.write('{\n\t"titles": [')
 for i,game in enumerate(gamelist):
     game_data = {attr.tag: unidecode(attr.text) for attr in game}
-    game_data['name'] = game_data['name'].replace('"','').replace(':','').replace('\n',' ').replace('-',' ').replace("'",'').replace('?','').replace('!','').replace('+','and').replace('$','S').replace('.','')
+    game_data['name'] = game_data['name'].replace('"','').replace(':','').replace('\n',' ').replace('-','').replace("'",'').replace('?','').replace('!','').replace('+','and').replace('$','S').replace('.','')[:MAXTITLE]
     if 'developer' not in game_data:
         game_data['developer'] = game_data['publisher']
     if 'releasedate' not in game_data:
